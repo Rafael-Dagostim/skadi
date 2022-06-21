@@ -1,4 +1,5 @@
 import React from "react";
+import { Toggle } from "../Toggle/Index";
 
 import './style.css';
 
@@ -11,7 +12,7 @@ export const LabelInput = ({ type, label }: LabelInputProps) => {
   return (
     <div className="LabelInput">
       <label>{label}</label>
-      <input type={type} />
+      {type === 'checkbox' ? <Toggle/> : <input type={type}/> } 
     </div>
   )
 }

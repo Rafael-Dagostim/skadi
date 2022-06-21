@@ -1,12 +1,14 @@
 import { LabelInput } from "./components/LabelInput/Index";
 
-import './App.css';
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
+    <main>
       <header className="App-header">
-        <h1><span>S</span>KADI</h1>
+        <h1>
+          <span>S</span>KADI
+        </h1>
       </header>
       <article>
         <aside>
@@ -15,11 +17,16 @@ function App() {
           <LabelInput type="number" label="Temperatura Inicial" />
           <LabelInput type="number" label="1º Instante" />
           <LabelInput type="number" label="Temperatura 1º Instante" />
-          <button>Gerar Gráfico</button>
+          <div className="btn-div">
+            <button>Gerar Gráfico</button>
+          </div>
         </aside>
-        <canvas></canvas>
+        <div className="chart"></div>
       </article>
-    </div>
+      <footer>
+        <p>Desenvolvido por Rafael Dagostim</p>
+      </footer>
+    </main>
   );
 }
 
