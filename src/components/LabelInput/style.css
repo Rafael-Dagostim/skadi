@@ -1,0 +1,23 @@
+.LabelInput {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+label {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    color: #747474;
+}
+
+input {
+    border: 2px solid #747474;
+    width: 80px;
+    height: 40px;
+    border-radius: 2px;
+}

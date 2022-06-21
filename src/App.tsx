@@ -17,6 +17,7 @@ function App() {
           <LabelInput type="number" label="Temperatura 1º Instante" />
           <button>Gerar Gráfico</button>
         </aside>
+        <canvas></canvas>
       </article>
     </div>
   );

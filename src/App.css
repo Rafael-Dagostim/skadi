@@ -6,6 +6,7 @@
 header {
   display: flex;
   align-items: center;
+  flex-direction: row;
   justify-content: center;
 }
 
@@ -17,5 +18,22 @@ header > h1 {
 
 header > h1 > span {
   font-weight: 500;
-  color: rgb(0, 140, 234);
+  color: #12AAFF;
+}
+
+button {
+  width: 160px;
+  height: 44px;
+  border: none;
+  color: white;
+  background-color: #12AAFF;
+  font-family: 'Raleway' sans-serif;
+  font-style: normal;
+  font-weight: 600;
+}
+
+aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }

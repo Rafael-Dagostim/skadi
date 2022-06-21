@@ -1,5 +1,7 @@
 import React from "react";
 
+import './style.css';
+
 type LabelInputProps = {
   type: 'number' | 'checkbox',
   label: string,
@@ -7,7 +9,7 @@ type LabelInputProps = {
 
 export const LabelInput = ({ type, label }: LabelInputProps) => {
   return (
-    <div>
+    <div className="LabelInput">
       <label>{label}</label>
       <input type={type} />
     </div>
