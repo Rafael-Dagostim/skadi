@@ -30,10 +30,9 @@ header > h1 > span {
   color: #12AAFF;
 }
 
-.chart {
+#chart {
   width: 70%;
-  height: 60%;
-  background-color: black;
+  height: 90%;
   margin-right: 3rem;
 }
 
@@ -61,7 +60,8 @@ article > aside {
   display: flex;
   flex-direction: column;
   width: 20%;
-  padding: 0 20px;
+  height: 100%;
+  padding-right: 10px;
   gap: 2.5rem;
   margin-left: 3rem;
 }
@@ -76,7 +76,16 @@ article > aside {
 footer {
   height: 5rem;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
+  
+}
+
+footer > p {
+  color: #747474;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 5px;
 }
 
