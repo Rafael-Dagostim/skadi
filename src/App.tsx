@@ -22,22 +22,32 @@ function App() {
   const T1 = 56;
   const t1 = 2;
 
+  const renderCoolingChart = (Tamb: number, T0: number, T1: number, t1: number) => {
+    let k = Math.log((T1 - Tamb) / (T0 - Tamb)) / t1
+    k = Math.round(k * 100) / 100
+    const coolingData: {x: number, y: number}[] = []
 
-  console.log(resolveTemperature(Tamb, T0, T1, t1, 10))
-  console.log(resolveInstant(Tamb, T0, T1, t1, 21))
-
-
-  const renderChart = () => {
+   
+    let i = 1;
+    while (resolveTemperature(Tamb, T0, T1, t1, i) > Tamb + 1) {
+      coolingData.push({x: i, y: Math.round(resolveTemperature(Tamb, T0, T1, t1, i) * 100) / 100})
+      i += 1;
+    }
+    console.log(coolingData)
     var options = {
       chart: {
         type: 'line'
       },
       series: [{
-        name: 'sales',
-        data: [
-
-        ]
+        name: 'Ambiente',
+        data: Tamb
+      },{
+        name: 'Resfriamento do Objeto',
+        data: coolingData
       }],
+      xaxis: {
+        type: 'numeric'
+      }
     }
 
     var chart = new ApexCharts(document.querySelector("#chart"), options);
@@ -60,7 +70,7 @@ function App() {
           <LabelInput type="number" label="1º Instante" />
           <LabelInput type="number" label="Temperatura 1º Instante" />
           <div className="btn-div">
-            <button onClick={renderChart}>Gerar Gráfico</button>
+            <button onClick={() => {renderCoolingChart(Tamb, T0, T1, t1)}}>Gerar Gráfico</button>
           </div>
         </aside>
         <div id="chart"></div>
