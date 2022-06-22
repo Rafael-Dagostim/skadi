@@ -76,7 +76,7 @@ article {
 
 }
 
-article > aside {
+article > form {
   display: flex;
   flex-direction: column;
   width: 20%;

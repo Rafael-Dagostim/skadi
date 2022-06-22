@@ -2,7 +2,15 @@ import "./App.css";
 import { Toggle } from "./components/Toggle/Index";
 import { useState } from "react";
 import { Dashboard } from "./components/Dashboard";
+import { useForm } from "react-hook-form";
+import { ApexOptions } from "apexcharts";
 
+interface formSubmit {
+  Tamb: number;
+  T0: number;
+  T1: number;
+  t1: number;
+}
 function App() {
   const resolveTemperature = (
     Tamb: number,
@@ -34,8 +42,6 @@ function App() {
     T1: number,
     t1: number
   ) => {
-    let k = Math.log((T1 - Tamb) / (T0 - Tamb)) / t1;
-    k = Math.round(k * 100) / 100;
     const coolingData: { x: number; y: number }[] = [];
 
     let i = 1;
@@ -52,19 +58,13 @@ function App() {
 
   const [automaticReading, setAutomaticReading] = useState<boolean>(false);
 
-  const [Tamb, setAmbientTemperature] = useState<number>(20);
-
-  const [T0, setInitialTemperature] = useState<number>(100);
-
-  const [t1, setFirstInstant] = useState<number>(5);
-
-  const [T1, setFirstInstantTemperature] = useState<number>(90);
-
   const [coolingData, setCoolingData] = useState<{ x: number; y: number }[]>(
-    generateCoolingData(Tamb, T0, T1, t1)
+    []
   );
 
-  const options = {
+  const { handleSubmit, register } = useForm<formSubmit>();
+
+  const options: ApexOptions  = {
     colors: ["#12AAFF", "#002d47"],
 
     xaxis: {
@@ -81,13 +81,20 @@ function App() {
     ],
   };
 
-  const series = [
+  const series: ApexOptions['series'] = [
     {
       name: "Temp",
       type: "line",
       data: coolingData,
     },
   ];
+
+  const updateChartData = (data: formSubmit) => {
+    const { Tamb, T0, T1, t1 } = data;
+    const newData = generateCoolingData(Number(Tamb), Number(T0), Number(T1), Number(t1))
+    console.log(newData)
+    setCoolingData(newData);
+  };
 
   return (
     <main>
@@ -97,7 +104,7 @@ function App() {
         </h1>
       </header>
       <article>
-        <aside>
+        <form onSubmit={handleSubmit(updateChartData)}>
           <div className="LabelInput">
             <label>Leitura Automática</label>
             <Toggle />
@@ -105,49 +112,33 @@ function App() {
 
           <div className="LabelInput">
             <label>Temperatura Ambiente</label>
-            <input
-              type="number"
-              onChange={(e: any) =>
-                setAmbientTemperature(Number(e.target.value))
-              }
-            />
+            <input {...register('Tamb', { required: true })} type="number" />
           </div>
 
           <div className="LabelInput">
             <label>Temperatura Inicial</label>
-            <input
-              type="number"
-              onChange={(e: any) =>
-                setInitialTemperature(Number(e.target.value))
-              }
-            />
+            <input {...register('T0', { required: true })} type="number" />
           </div>
 
           <div className="LabelInput">
-            <label>1º Instante</label>
-            <input
-              type="number"
-              onChange={(e: any) => setFirstInstant(Number(e.target.value))}
-            />
+            <label>Temperatura Próximo Instante</label>
+            <input {...register('T1', { required: true })} type="number" />
           </div>
 
           <div className="LabelInput">
-            <label>Temperatura 1º Instante</label>
-            <input
-              type="number"
-              onChange={(e: any) =>
-                setFirstInstantTemperature(Number(e.target.value))
-              }
-            />
+            <label>Valor Próximo Instante</label>
+            <input {...register('t1', { required: true })} type="number" />
           </div>
+
           <div className="btn-div">
-            <button>Gerar Gráfico</button>
+            <button type="submit">Gerar Gráfico</button>
           </div>
-        </aside>
-        <div className='Teste'>
+        </form>
+        <div className="Teste">
           <Dashboard options={options} series={series}></Dashboard>
         </div>
       </article>
+
       <footer>
         <p>Desenvolvido por Rafael Dagostim</p>
       </footer>
