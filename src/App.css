@@ -3,6 +3,31 @@
   padding: 0;
 }
 
+.LabelInput {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+label {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  color: #747474;
+}
+
+input {
+  border: 1px solid #747474;
+  width: 80px;
+  height: 40px;
+  border-radius: 2px;
+}
+
+
 main {
   display: flex;
   flex-direction: column;
@@ -30,12 +55,6 @@ header > h1 > span {
   color: #12AAFF;
 }
 
-#chart {
-  width: 70%;
-  height: 90%;
-  margin-right: 3rem;
-}
-
 button {
   width: 160px;
   height: 44px;
@@ -54,6 +73,7 @@ article {
   align-items: center;
   width: 100%;
   height: 100%;
+
 }
 
 article > aside {
@@ -64,6 +84,12 @@ article > aside {
   padding-right: 10px;
   gap: 2.5rem;
   margin-left: 3rem;
+}
+
+.Teste {
+  width: 90%;
+  height: 100%;
+
 }
 
 .btn-div {
