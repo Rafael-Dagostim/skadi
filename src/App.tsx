@@ -24,6 +24,7 @@ function App() {
   ) => {
     let k = Math.log((T1 - Tamb) / (T0 - Tamb)) / t1;
     k = Math.round(k * 100) / 100;
+    setConstantK(k);
     return Tamb + (T0 - Tamb) * Math.E ** (k * t);
   };
 
@@ -47,8 +48,8 @@ function App() {
     return coolingData;
   };
 
-  const [automaticReading, setAutomaticReading] = useState<boolean>(false);
   const [coolingData, setCoolingData] = useState<{ x: number; y: number }[]>([]);
+  const [constantK, setConstantK] = useState<number | null>(null);
 
   const { handleSubmit, register, setValue } = useForm<formSubmit>();
 
@@ -75,7 +76,7 @@ function App() {
       name: "Temperatura",
       type: "line",
       data: coolingData,
-    },
+    }
   ];
 
   const updateChartData = (data: formSubmit) => {
@@ -125,6 +126,8 @@ function App() {
               <label>Instante da Leitura</label>
               <input step="0.1" {...register('t1', { required: true })} type="number" />
             </div>
+
+            <p>K: {constantK}</p>
           </div>
           <div className="btn-div">
               <button onClick={getTempDataAuto}>Buscar dados</button>
