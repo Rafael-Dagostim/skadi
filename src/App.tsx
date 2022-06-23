@@ -13,6 +13,8 @@ interface formSubmit {
   t1: number;
 }
 function App() {
+  const delay = (ms: number) => new Promise((resolve) => {setTimeout(resolve, ms)});
+
   const axiosInstance = new Axios({baseURL: 'http://localhost:4001'})
 
   const resolveTemperature = (
@@ -50,6 +52,7 @@ function App() {
 
   const [coolingData, setCoolingData] = useState<{ x: number; y: number }[]>([]);
   const [constantK, setConstantK] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { handleSubmit, register, setValue } = useForm<formSubmit>();
 
@@ -92,9 +95,21 @@ function App() {
   }
 
   const getTempDataAuto = async() => {
+    setIsLoading(true);
     const data = await getDataFromSensors();
     setValue('Tamb', data.Tamb);
     setValue('T0', data.T);
+
+    while(true) {
+      await delay(5000);
+      const newData = await getDataFromSensors();
+      console.log(data, newData);
+      if((data.T - newData.T) > 1.5) {
+        setValue('T1', newData.T)
+        setValue('t1', Math.round((newData.date.getTime() - data.date.getTime()) / 1000))
+        break;
+      }
+    }
   }
 
   return (
