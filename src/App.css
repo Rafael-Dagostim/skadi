@@ -3,6 +3,17 @@
   padding: 0;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .LabelInput {
   display: flex;
   align-items: center;
@@ -25,6 +36,11 @@ input {
   width: 80px;
   height: 40px;
   border-radius: 2px;
+  text-align: center;
+  font-family: 'Lato', sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  color: #747474;
 }
 
 
@@ -66,6 +82,10 @@ button {
   font-weight: 600;
 }
 
+button:active {
+  background-color: #0177bb;
+}
+
 article {
   display: flex;
   flex-direction: row;
@@ -73,12 +93,12 @@ article {
   align-items: center;
   width: 100%;
   height: 100%;
-
 }
 
 article > form {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: 20%;
   height: 100%;
   padding-right: 10px;
@@ -86,17 +106,25 @@ article > form {
   margin-left: 3rem;
 }
 
-.Teste {
-  width: 90%;
-  height: 100%;
-
+.input-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 80%;
 }
 
 .btn-div {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  height: 20%;
+  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
+}
+
+.chart {
+  width: 90%;
+  height: 100%;
+
 }
 
 footer {

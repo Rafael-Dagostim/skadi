@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Dashboard } from "./components/Dashboard";
 import { useForm } from "react-hook-form";
 import { ApexOptions } from "apexcharts";
+import { Axios } from "axios";
 
 interface formSubmit {
   Tamb: number;
@@ -12,6 +13,8 @@ interface formSubmit {
   t1: number;
 }
 function App() {
+  const axiosInstance = new Axios({baseURL: 'http://localhost:4001'})
+
   const resolveTemperature = (
     Tamb: number,
     T0: number,
@@ -22,18 +25,6 @@ function App() {
     let k = Math.log((T1 - Tamb) / (T0 - Tamb)) / t1;
     k = Math.round(k * 100) / 100;
     return Tamb + (T0 - Tamb) * Math.E ** (k * t);
-  };
-
-  const resolveInstant = (
-    Tamb: number,
-    T0: number,
-    T1: number,
-    t1: number,
-    T: number
-  ) => {
-    let k = Math.log((T1 - Tamb) / (T0 - Tamb)) / t1;
-    k = Math.round(k * 100) / 100;
-    return -Math.log((T - Tamb) / (T0 - Tamb)) / -k;
   };
 
   const generateCoolingData = (
@@ -52,28 +43,26 @@ function App() {
       });
       i += 1;
     }
-
+    console.log(coolingData);
     return coolingData;
   };
 
   const [automaticReading, setAutomaticReading] = useState<boolean>(false);
+  const [coolingData, setCoolingData] = useState<{ x: number; y: number }[]>([]);
 
-  const [coolingData, setCoolingData] = useState<{ x: number; y: number }[]>(
-    []
-  );
+  const { handleSubmit, register, setValue } = useForm<formSubmit>();
 
-  const { handleSubmit, register } = useForm<formSubmit>();
-
-  const options: ApexOptions  = {
+  const options: ApexOptions = {
     colors: ["#12AAFF", "#002d47"],
 
     xaxis: {
       categories: coolingData.map((value) => value.x),
+      tickAmount: 24,
     },
 
     yaxis: [
       {
-        seriesName: "Temp",
+        seriesName: "Temperatura",
         title: {
           text: "Temperatura",
         },
@@ -83,7 +72,7 @@ function App() {
 
   const series: ApexOptions['series'] = [
     {
-      name: "Temp",
+      name: "Temperatura",
       type: "line",
       data: coolingData,
     },
@@ -92,9 +81,20 @@ function App() {
   const updateChartData = (data: formSubmit) => {
     const { Tamb, T0, T1, t1 } = data;
     const newData = generateCoolingData(Number(Tamb), Number(T0), Number(T1), Number(t1))
-    console.log(newData)
     setCoolingData(newData);
   };
+
+  const getDataFromSensors = async (): Promise<{Tamb: number, T: number, date: Date}> => {
+    const { data } = await axiosInstance.get('/tempValue')
+    const { Tamb, T, date } = JSON.parse(data);
+    return { Tamb: Number(Tamb), T: Number(T), date: new Date(date)}
+  }
+
+  const getTempDataAuto = async() => {
+    const data = await getDataFromSensors();
+    setValue('Tamb', data.Tamb);
+    setValue('T0', data.T);
+  }
 
   return (
     <main>
@@ -105,36 +105,33 @@ function App() {
       </header>
       <article>
         <form onSubmit={handleSubmit(updateChartData)}>
-          <div className="LabelInput">
-            <label>Leitura Automática</label>
-            <Toggle />
-          </div>
+          <div className="input-div">
+            <div className="LabelInput">
+              <label>Temperatura Ambiente</label>
+              <input step="0.1" {...register('Tamb', { required: true })} type="number" />
+            </div>
 
-          <div className="LabelInput">
-            <label>Temperatura Ambiente</label>
-            <input {...register('Tamb', { required: true })} type="number" />
-          </div>
+            <div className="LabelInput">
+              <label>Temperatura Inicial</label>
+              <input step="0.1" {...register('T0', { required: true })} type="number" />
+            </div>
 
-          <div className="LabelInput">
-            <label>Temperatura Inicial</label>
-            <input {...register('T0', { required: true })} type="number" />
-          </div>
+            <div className="LabelInput">
+              <label>Temperatura Próximo Instante</label>
+              <input step="0.1" {...register('T1', { required: true })} type="number" />
+            </div>
 
-          <div className="LabelInput">
-            <label>Temperatura Próximo Instante</label>
-            <input {...register('T1', { required: true })} type="number" />
+            <div className="LabelInput">
+              <label>Instante da Leitura</label>
+              <input step="0.1" {...register('t1', { required: true })} type="number" />
+            </div>
           </div>
-
-          <div className="LabelInput">
-            <label>Valor Próximo Instante</label>
-            <input {...register('t1', { required: true })} type="number" />
-          </div>
-
           <div className="btn-div">
-            <button type="submit">Gerar Gráfico</button>
-          </div>
+              <button onClick={getTempDataAuto}>Buscar dados</button>
+              <button type="submit">Gerar Gráfico</button>
+            </div>
         </form>
-        <div className="Teste">
+        <div className="chart">
           <Dashboard options={options} series={series}></Dashboard>
         </div>
       </article>
