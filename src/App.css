@@ -98,11 +98,10 @@ article {
 article > form {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   width: 20%;
   height: 100%;
   padding-right: 10px;
-  gap: 2.5rem;
   margin-left: 3rem;
 }
 
@@ -110,7 +109,7 @@ article > form {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  height: 80%;
+  height: 60%;
 }
 
 .btn-div {
