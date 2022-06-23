@@ -121,10 +121,16 @@ article > form {
   align-items: center;
 }
 
+#constantK {
+  text-align: center;
+  font-size: 40px;
+  font-family: 'Lato', sans-serif;
+  color: #747474;
+}
+
 .chart {
   width: 90%;
   height: 100%;
-
 }
 
 footer {
@@ -143,3 +149,39 @@ footer > p {
   margin-bottom: 5px;
 }
 
+#spinner {
+  fill:transparent;
+  stroke: #12AAFF;
+  stroke-width: 7px;
+  stroke-linecap: round;
+  filter:url(#shadow);
+  transform-origin: center;
+  animation-name: animation;
+  animation-duration: 1.2s;
+  animation-timing-function: cubic-bezier;
+  animation-iteration-count: infinite;
+}
+
+#container {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  width: 40px;
+  height: 40px;
+  padding-right: 10px;
+}
+
+@keyframes animation {
+  0% {
+    stroke-dasharray: 1 98;
+    stroke-dashoffset: -105;
+  }
+  50% {
+    stroke-dasharray: 80 10;
+    stroke-dashoffset: -160;
+  }
+  100% {
+    stroke-dasharray: 1 98;
+    stroke-dashoffset: -300;
+  }
+}
